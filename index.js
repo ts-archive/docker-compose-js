@@ -5,7 +5,7 @@ const debug = require('debug')('docker-compose-js');
 const Promise = require('bluebird');
 
 module.exports = function compose(composeFile) {
-    function run(command, options={}, services, param1) {
+    function run(command, options = {}, services, param1) {
         return new Promise(((resolve, reject) => {
             let stdout = '';
             let stderr = '';
@@ -14,27 +14,26 @@ module.exports = function compose(composeFile) {
 
             // parse the options and append the -- or - if missing
             Object.keys(options).forEach((option) => {
-
-                if(option.length <= 2) {
+                if (option.length <= 2) {
                     if (option.indexOf('-') === 0) {
-                        args.push(option)
+                        args.push(option);
                     } else {
                         args.push(`-${option}`);
                     }
 
                     // not all options have attached values.
                     if (options[option]) args.push(options[option]);
-                    return
+                    return;
                 }
 
-                let param = `--${option}`
+                let param = `--${option}`;
                 if (option.indexOf('--') === 0) {
-                    param = option
+                    param = option;
                 }
 
                 if (options[option]) param += `=${options[option]}`;
                 args.push(param);
-            })
+            });
 
             if (services) {
                 if (Array.isArray(services)) {
@@ -46,21 +45,21 @@ module.exports = function compose(composeFile) {
 
             // Some commands support an additional parameter
             if (param1) args.push(param1);
-            debug('docker-compose', args)
+            debug('docker-compose', args);
             const cmd = spawn('docker-compose', args);
 
             cmd.stdout.on('data', (data) => {
-                debug('stdout', data.toString())
+                debug('stdout', data.toString());
                 stdout += data;
             });
 
             cmd.stderr.on('data', (data) => {
-                debug('stderr', data.toString())
+                debug('stderr', data.toString());
                 stderr += data;
             });
 
             cmd.on('close', (code) => {
-                debug('close with code', code)
+                debug('close with code', code);
                 if (code !== 0) {
                     reject(`Command exited: ${code}\n${stderr}`);
                 } else {
