@@ -12,12 +12,11 @@ describe('compose', () => {
         sut = compose(path.join(__dirname, 'fixtures', 'example.yaml'));
     });
 
-    describe('->up', () => {
-        afterEach(() => sut.down());
-
-        it('should be able to call compose.up()', (done) => {
-            sut.up().then(done).catch(done.fail);
-        });
+    it('should be able to call compose.up and compose.down()', (done) => {
+        sut.up()
+            .then(() => sut.down())
+            .then(done)
+            .catch(done.fail);
     });
 
     describe('when the cluster is up', () => {
