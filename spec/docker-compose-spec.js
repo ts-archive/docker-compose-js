@@ -12,6 +12,22 @@ describe('compose', () => {
         sut = compose(path.join(__dirname, 'fixtures', 'example.yaml'));
     });
 
+    it('should be able to call compose.pull()', (done) => {
+        sut.pull()
+            .then(done)
+            .catch(done.fail);
+    });
+
+    it('should be able to call compose.version()', (done) => {
+        sut.version()
+            .then((result) => {
+                expect(result).not.toEqual(null);
+                expect(result).toContain('docker-compose version');
+                done();
+            })
+            .catch(done.fail);
+    });
+
     describe('when the cluster is up', () => {
         beforeEach((done) => {
             sut.up({
@@ -51,11 +67,23 @@ describe('compose', () => {
                 .catch(done.fail);
         });
 
+        it('should be able to call pause and unpause the service', (done) => {
+            sut.pause('test')
+                .then(() => sut.unpause('test'))
+                .then(done)
+                .catch(done.fail);
+        });
+
+
         it('should be able to be list running services', (done) => {
             sut.start()
-                .then(() => sut.ps())
+                .then(() => sut.ps({
+                    // Only output services
+                    services: ''
+                }))
                 .then((result) => {
                     expect(result).not.toEqual(null);
+                    expect(result).toContain('test');
                     done();
                 }).catch(done.fail);
         });
