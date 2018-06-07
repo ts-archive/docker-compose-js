@@ -12,17 +12,17 @@ describe('compose', () => {
         sut = compose(path.join(__dirname, 'fixtures', 'example.yaml'));
     });
 
-    it('should be able to call compose.up and compose.down()', (done) => {
-        sut.up()
-            .then(() => sut.down())
-            .then(done)
-            .catch(done.fail);
-    });
-
     describe('when the cluster is up', () => {
-        beforeEach(() => sut.up());
+        beforeEach((done) => {
+            sut.up()
+                .then(done)
+                .catch(done.fail);
+        });
 
-        afterEach(() => sut.down());
+        afterEach((done) => {
+            sut.down({ timeout: 1 })
+                .then(done).catch(done.fail);
+        });
 
         it('should be able to call compose.start()', (done) => {
             sut.start('test').then(done).catch(done.fail);
