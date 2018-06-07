@@ -1,6 +1,6 @@
 {
   "name": "docker-compose-js",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Node.js driver for controlling docker-compose testing environments.",
   "main": "index.js",
   "scripts": {
