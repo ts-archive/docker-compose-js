@@ -31,7 +31,6 @@ describe('compose', () => {
     describe('when the cluster is up', () => {
         beforeEach((done) => {
             sut.up({
-                'renew-anon-volumes': '',
                 'force-recreate': ''
             }).then(done).catch(done.fail);
         });
@@ -41,7 +40,7 @@ describe('compose', () => {
                 timeout: 1,
                 '--volumes': '',
                 '--remove-orphans': ''
-            }).then(done).catch(done.fail);
+            }).then(done).catch(done);
         });
 
         it('should be able to call start and stop the service', (done) => {
