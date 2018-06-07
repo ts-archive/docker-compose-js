@@ -89,8 +89,8 @@ module.exports = function compose(composeFile) {
         rm: (services, options) => run('rm', options, services),
         // logs is going to require special handling since it attaches to containers
         // logs: (services, options) => { return run('logs', options, services); },
-        port: (service, privatePort, options) => run('rm', options, service, privatePort),
-        run: (service, command, options) => run('rm', options, service, command)
+        port: (service, privatePort, options) => run('port', options, service, privatePort),
+        run,
         /*
             Currently unimplemented
                 events

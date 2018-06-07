@@ -39,7 +39,6 @@ describe('compose', () => {
         afterEach((done) => {
             sut.down({
                 timeout: 1,
-                '--rmi': 'local',
                 '--volumes': '',
                 '--remove-orphans': ''
             }).then(done).catch(done.fail);
@@ -63,6 +62,18 @@ describe('compose', () => {
 
         it('should be able to call restart the service', (done) => {
             sut.restart('test', { '--timeout': 1 })
+                .then(done)
+                .catch(done.fail);
+        });
+
+        it('should be able to call rm on the service', (done) => {
+            sut.rm('test')
+                .then(done)
+                .catch(done.fail);
+        });
+
+        it('should be able to call port', (done) => {
+            sut.port('test', '40230')
                 .then(done)
                 .catch(done.fail);
         });
