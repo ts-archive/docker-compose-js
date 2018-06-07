@@ -4,8 +4,8 @@
   "description": "Node.js driver for controlling docker-compose testing environments.",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint lib/**/*.js",
-    "lint:fix": "eslint --fix lib/**/*.js",
+    "lint": "eslint *.js spec/**/*.js",
+    "lint:fix": "eslint --fix *.js spec/**/*.js",
     "test": "nyc -x spec/ --reporter=text-summary jasmine && nyc report --reporter=html",
     "report-coverage": "nyc report --reporter=text-lcov > coverage/coverage.lcov && codecov"
   },
@@ -31,7 +31,8 @@
   "author": "Kimbro Staken",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.4.0"
+    "bluebird": "^3.4.0",
+    "debug": "^3.1.0"
   },
   "devDependencies": {
     "codecov": "^3.0.2",
