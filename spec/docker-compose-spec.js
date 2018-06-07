@@ -14,9 +14,10 @@ describe('compose', () => {
 
     describe('when the cluster is up', () => {
         beforeEach((done) => {
-            sut.up()
-                .then(done)
-                .catch(done.fail);
+            sut.up({
+                'renew-anon-volumes': '',
+                'force-recreate': ''
+            }).then(done).catch(done.fail);
         });
 
         afterEach((done) => {
@@ -31,7 +32,7 @@ describe('compose', () => {
         it('should be able to call start and stop the service', (done) => {
             sut.start('test')
                 .then(() => sut.stop('test', {
-                    timeout: 5,
+                    timeout: 1,
                 }))
                 .then(done)
                 .catch(done.fail);
@@ -44,6 +45,12 @@ describe('compose', () => {
                 .catch(done.fail);
         });
 
+        it('should be able to call restart the service', (done) => {
+            sut.restart('test', { '--timeout': 1 })
+                .then(done)
+                .catch(done.fail);
+        });
+
         it('should be able to be list running services', (done) => {
             sut.start()
                 .then(() => sut.ps())
@@ -51,6 +58,16 @@ describe('compose', () => {
                     expect(result).not.toEqual(null);
                     done();
                 }).catch(done.fail);
+        });
+
+        it('should return a rejection when passing in incorrect options', (done) => {
+            sut.start('something wrong')
+                .then(done.fail)
+                .catch((err) => {
+                    expect(err).toContain('Command exited: 1');
+                    expect(err).toContain('No such service: something wrong');
+                    done();
+                });
         });
     });
 });
